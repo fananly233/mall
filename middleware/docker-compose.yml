@@ -1,0 +1,127 @@
+services:
+
+  # =========================
+  # Redis
+  # =========================
+  redis:
+    image: redis:3.2.12
+    container_name: redis
+    restart: unless-stopped
+
+    ports:
+      - "6379:6379"
+
+    command:
+      - redis-server
+      - --appendonly
+      - "yes"
+      - --appendfsync
+      - everysec
+
+    volumes:
+      - redis_data:/data
+
+    networks:
+      - middleware
+
+
+  # =========================
+  # RabbitMQ
+  # RabbitMQ 3.8.5
+  # + delayed-message 插件
+  # =========================
+  rabbitmq:
+    build:
+      context: ./rabbitmq
+      dockerfile: Dockerfile
+
+    container_name: rabbitmq
+    hostname: rabbitmq
+
+    restart: unless-stopped
+
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: 1234567
+      RABBITMQ_DEFAULT_VHOST: /
+
+    ports:
+      # AMQP
+      - "5672:5672"
+
+      # Web 管理后台
+      - "15672:15672"
+
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+
+    networks:
+      - middleware
+
+
+  # =========================
+  # Nacos 2.3.2
+  # =========================
+  nacos:
+    image: nacos/nacos-server:v2.3.2
+    container_name: nacos
+
+    restart: unless-stopped
+
+    environment:
+      # 单机模式
+      MODE: standalone
+
+      # 开发环境关闭鉴权
+      NACOS_AUTH_ENABLE: "false"
+
+      # JVM 内存
+      JVM_XMS: 256m
+      JVM_XMX: 512m
+      JVM_XMN: 128m
+
+      # 优先使用 hostname
+      PREFER_HOST_MODE: hostname
+
+    ports:
+      # Nacos HTTP
+      - "8848:8848"
+
+      # Nacos 2.x gRPC
+      - "9848:9848"
+      - "9849:9849"
+
+    volumes:
+      - nacos_data:/home/nacos/data
+      - nacos_logs:/home/nacos/logs
+
+    networks:
+      - middleware
+
+
+# =========================
+# 持久化数据
+# =========================
+volumes:
+
+  redis_data:
+    name: middleware_redis_data
+
+  rabbitmq_data:
+    name: middleware_rabbitmq_data
+
+  nacos_data:
+    name: middleware_nacos_data
+
+  nacos_logs:
+    name: middleware_nacos_logs
+
+
+# =========================
+# 网络
+# =========================
+networks:
+
+  middleware:
+    name: middleware_network
+    driver: bridge
