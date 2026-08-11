@@ -1,7 +1,11 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
 </script>
 
 <template>
-  <HelloWorld />
+    <!-- 顶层路由 /login   /(路由到Layout) -->
+    <router-view></router-view>
 </template>
+
+<style scoped>
+
+</style>

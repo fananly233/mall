@@ -1,7 +1,9 @@
 package com.easy.mall.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.easy.mall.pojo.Admin;
+import com.easy.mall.pojo.query.AdminQuery;
 
 /**
  * <p>
@@ -13,4 +15,5 @@ import com.easy.mall.pojo.Admin;
  */
 public interface IAdminService extends IService<Admin> {
 
+    IPage<Admin> list(AdminQuery adminQuery);
 }
