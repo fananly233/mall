@@ -20,7 +20,10 @@ public class MPGenerator {
 
     public static void main(String[] args) {
         // 1.数据源配置
-        DataSourceConfig dataSourceConfig = new DataSourceConfig.Builder("jdbc:mysql://localhost:3306/mall","root","Nn820820!").build();
+        String dbUrl = getEnv("DB_URL", "jdbc:mysql://localhost:3306/mall?useUnicode=true&characterEncoding=utf-8");
+        String dbUsername = getEnv("DB_USERNAME", "root");
+        String dbPassword = getRequiredEnv("DB_PASSWORD");
+        DataSourceConfig dataSourceConfig = new DataSourceConfig.Builder(dbUrl, dbUsername, dbPassword).build();
 
         // 2.全局配置
         GlobalConfig.Builder globalConfigBuilder = new GlobalConfig.Builder();
@@ -81,5 +84,18 @@ public class MPGenerator {
 
         // 执行
         autoGenerator.execute();
+    }
+
+    private static String getEnv(String name, String defaultValue) {
+        String value = System.getenv(name);
+        return value == null || value.isBlank() ? defaultValue : value;
+    }
+
+    private static String getRequiredEnv(String name) {
+        String value = System.getenv(name);
+        if (value == null || value.isBlank()) {
+            throw new IllegalStateException("请先设置环境变量 " + name);
+        }
+        return value;
     }
 }

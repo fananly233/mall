@@ -1,9 +1,11 @@
 spring:
+  config:
+    import: optional:file:./config/application-local.yml
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/mall?useUnicode=true&characterEncoding=utf-8
     username: root
-    password: Nn820820!
+    password: ${DB_PASSWORD:}
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
