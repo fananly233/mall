@@ -1,11 +1,12 @@
 package com.easy.mall;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
 
 @SpringBootApplication
-//@MapperScan("com.easy.mall.mapper")
+@MapperScan("com.easy.mall.mapper")
 @EnableCaching
 public class AdminAppcalition {
     public static void main(String[] args) {

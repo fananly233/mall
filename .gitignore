@@ -1,39 +1,107 @@
+# =========================
+# Java / Maven
+# =========================
 target/
+**/target/
+*.class
+*.jar
+*.war
+*.ear
+
+# Keep Maven Wrapper files if they are added later.
 !.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
-.kotlin
 
-### IntelliJ IDEA ###
-.idea/modules.xml
-.idea/jarRepositories.xml
-.idea/compiler.xml
-.idea/libraries/
-*.iws
+# Maven generated reports and local metadata
+**/dependency-reduced-pom.xml
+release.properties
+pom.xml.asc
+
+# =========================
+# Spring Boot / application data
+# =========================
+*.log
+logs/
+**/logs/
+application-local.yml
+application-local.yaml
+application-*.local.yml
+application-*.local.yaml
+*.secret
+*.secrets
+
+# Local uploads and runtime-generated files
+uploads/
+**/uploads/
+*.pid
+*.tmp
+
+# =========================
+# Vue / Vite / Node / pnpm
+# =========================
+node_modules/
+**/node_modules/
+dist/
+**/dist/
+.vite/
+**/.vite/
+.cache/
+**/.cache/
+*.tsbuildinfo
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.pnpm-store/
+
+# Keep lockfiles: pnpm-lock.yaml/package-lock.json/yarn.lock are useful for
+# reproducible installs and should normally be committed.
+
+# =========================
+# IDEs and editors
+# =========================
+.idea/
 *.iml
+*.iws
 *.ipr
-
-### Eclipse ###
-.apt_generated
-.classpath
-.factorypath
 .project
-.settings
-.springBeans
-.sts4-cache
-
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
-
-### VS Code ###
+.classpath
+.settings/
+.factorypath
 .vscode/
+!.vscode/extensions.json
+!.vscode/settings.json
 
-### Mac OS ###
+# =========================
+# Operating systems
+# =========================
 .DS_Store
+Thumbs.db
+Desktop.ini
+
+# =========================
+# Local environment / secrets
+# =========================
+.env
+.env.*
+!.env.example
+!.env.sample
+*.pem
+*.key
+*.p12
+*.jks
+
+# =========================
+# Coverage / test output
+# =========================
+coverage/
+**/coverage/
+.nyc_output/
+test-results/
+
+# =========================
+# Temporary files
+# =========================
+*.bak
+*.swp
+*.swo
+*~

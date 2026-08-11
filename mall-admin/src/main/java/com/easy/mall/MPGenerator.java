@@ -29,7 +29,7 @@ public class MPGenerator {
         System.out.println(projectPath);// D:\MyIdeaProject\mybatis-plus
         globalConfigBuilder.outputDir(projectPath + "/mall-admin" + "/src/main/java");
         // 作者
-        globalConfigBuilder.author("Easy");
+        globalConfigBuilder.author("niu");
         // 结束时是否打开文件夹
         globalConfigBuilder.openDir(false);
         // 实体属性Swagger2注解
