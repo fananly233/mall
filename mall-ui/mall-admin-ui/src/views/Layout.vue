@@ -293,7 +293,7 @@
 
             &__logo {
                 height: 120px;
-                background: url('@/assets/logo.png') no-repeat center / 120px auto;
+                background: url('@/assets/logo.svg') no-repeat center / 120px auto;
             }
 
             .el-menu {

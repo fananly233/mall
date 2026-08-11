@@ -1,0 +1,59 @@
+name: Mall Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Build and publish release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout tag
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+
+      - name: Build backend package
+        run: mvn --batch-mode --no-transfer-progress -DskipTests package
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: pnpm
+          cache-dependency-path: mall-ui/mall-admin-ui/pnpm-lock.yaml
+
+      - name: Build frontend package
+        working-directory: mall-ui/mall-admin-ui
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm build
+
+      - name: Prepare release files
+        env:
+          RELEASE_VERSION: ${{ github.ref_name }}
+        run: |
+          mkdir -p artifacts
+          cp mall-admin/target/*.jar "artifacts/mall-admin-${RELEASE_VERSION}.jar"
+          tar -czf "artifacts/mall-admin-ui-${RELEASE_VERSION}.tar.gz" -C mall-ui/mall-admin-ui dist
+
+      - name: Publish GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" artifacts/* --verify-tag --generate-notes
