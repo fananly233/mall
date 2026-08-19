@@ -4,6 +4,7 @@ package com.easy.mall.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.easy.mall.pojo.Product;
 import com.easy.mall.pojo.query.ProductQuery;
+import com.easy.mall.pojo.vo.ProductVO;
 import com.easy.mall.service.IProductService;
 import com.easy.mall.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,7 @@ public class ProductController {
     @GetMapping("/list")
     public Result list(ProductQuery productQuery) {
         //PageInfo pageInfo = productService.list(productQuery);
-        IPage<Product> page = productService.list(productQuery);
+        IPage<ProductVO> page = productService.list(productQuery);
         return Result.ok(page);
     }
 

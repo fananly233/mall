@@ -1,7 +1,9 @@
 package com.easy.mall.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.easy.mall.pojo.Category;
+import com.easy.mall.pojo.query.CategoryQuery;
 
 /**
  * <p>
@@ -13,4 +15,5 @@ import com.easy.mall.pojo.Category;
  */
 public interface ICategoryService extends IService<Category> {
 
+    IPage<Category> list(CategoryQuery categoryQuery);
 }

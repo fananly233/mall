@@ -10,6 +10,7 @@
     //分页信息和搜索条件
     const productQuery = reactive({
         name: '',
+        categoryId: '',
         page: 1,
         limit: 10
     })
@@ -137,6 +138,7 @@
 
     import {useTokenStore} from "@/store/token.js";
     import WangEditor from "../components/WangEditor.vue";
+    import categoryApi from "../api/category.js";
     const tokenStore = useTokenStore()
     const headers = ref({
         //在请求头里面携带token传递到后台
@@ -148,6 +150,26 @@
       console.log(detail)
       product.value.detail = detail
     }
+
+    //分类处理
+    const selectCategory = ref(null)
+    const topCategoryList = ref([])
+    categoryApi.selectTopCategoeyList().then(result => {
+      if (result.code === 0) {
+        topCategoryList.value = result.data
+      }
+    })
+
+    const secondCategoryList = ref([])
+    const selectChange = (value) => {
+      console.log(value)
+      categoryApi.selectSecondCategoryListByParentId(value).then(result => {
+        if (result.code === 0) {
+          secondCategoryList.value = result.data
+        }
+      })
+    }
+
 </script>
 
 <template>
@@ -162,6 +184,24 @@
             <el-form-item label="名字">
                 <el-input v-model="productQuery.name" placeholder="请输入名字" clearable/>
             </el-form-item>
+          <el-form-item>
+            <el-select v-model="selectCategory" clearable placeholder="请选择一级分类" @change="selectChange" style="width: 200px">
+              <el-option
+                  v-for="category in topCategoryList"
+                  :key="category.id"
+                  :label="category.name"
+                  :value="category.id"
+              />
+            </el-select>
+            <el-select v-model="productQuery.categoryId" clearable placeholder="请选择二级分类" style="width: 200px">
+              <el-option
+                  v-for="category in secondCategoryList"
+                  :key="category.id"
+                  :label="category.name"
+                  :value="category.id"
+              />
+            </el-select>
+          </el-form-item>
             <el-form-item>
                 <el-button type="primary" @click="onSearch">搜索</el-button>
             </el-form-item>
@@ -171,6 +211,7 @@
             <el-table-column fixed prop="id" label="ID"/>
             <el-table-column prop="name" label="名字"/>
             <el-table-column prop="categoryId" label="分类ID"/>
+            <el-table-column prop="categoryName" label="分类名"/>
             <el-table-column prop="price" label="商品价格"/>
             <el-table-column prop="stock" label="库存"/>
             <!-- <el-table-column prop="avatar" label="头像"/>-->
@@ -204,16 +245,34 @@
                 <el-input v-model="product.name" autocomplete="off" />
             </el-form-item>
             <el-form-item label="分类" :label-width="60">
-                <el-input v-model="product.categoryId" autocomplete="off" />
+<!--                <el-input v-model="product.categoryId" autocomplete="off" />-->
+              <el-select v-model="selectCategory" clearable placeholder="请选择一级分类" @change="selectChange" style="width: 200px">
+                <el-option
+                    v-for="category in topCategoryList"
+                    :key="category.id"
+                    :label="category.name"
+                    :value="category.id"
+                />
+              </el-select>
+              <el-select v-model="product.categoryId" clearable placeholder="请选择二级分类" style="width: 200px">
+                <el-option
+                    v-for="category in secondCategoryList"
+                    :key="category.id"
+                    :label="category.name"
+                    :value="category.id"
+                />
+              </el-select>
             </el-form-item>
             <el-form-item label="子标题" :label-width="60">
                 <el-input v-model="product.subtitle" autocomplete="off" />
             </el-form-item>
             <el-form-item label="价格" :label-width="60">
-              <el-input v-model="product.price" autocomplete="off" />
+<!--              <el-input v-model="product.price" autocomplete="off" />-->
+              <el-input-number v-model="product.price" :min="1" :max="99999" />
             </el-form-item>
             <el-form-item label="库存" :label-width="60">
-              <el-input v-model="product.stock" autocomplete="off" />
+<!--              <el-input v-model="product.stock" autocomplete="off" />-->
+              <el-input-number v-model="product.stock" :min="1" :max="99999" />
             </el-form-item>
             <el-form-item label="照片" :label-width="60">
                 <el-upload

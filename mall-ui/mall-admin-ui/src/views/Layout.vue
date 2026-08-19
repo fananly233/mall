@@ -153,18 +153,18 @@
 					</el-icon>
 					<span>商品管理</span>
 				</el-menu-item>
-                <el-menu-item index="/banji">
-                    <el-icon>
-                        <Promotion/>
-                    </el-icon>
-                    <span>班级管理</span>
-                </el-menu-item>
-                <el-menu-item index="/chart">
-                    <el-icon>
-                        <Promotion/>
-                    </el-icon>
-                    <span>统计管理</span>
-                </el-menu-item>
+        <el-menu-item index="/category">
+            <el-icon>
+                <Promotion/>
+            </el-icon>
+            <span>分类管理</span>
+        </el-menu-item>
+        <el-menu-item index="/chart">
+            <el-icon>
+                <Promotion/>
+            </el-icon>
+            <span>统计管理</span>
+        </el-menu-item>
 				<el-sub-menu>
 					<template #title>
 						<el-icon>
